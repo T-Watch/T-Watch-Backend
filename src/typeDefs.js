@@ -6,6 +6,11 @@ const typeDefs = `
     USER
   }
 
+  enum Gender {
+    M
+    F
+  }
+
   enum MessageType {
     REGULAR
     JOIN
@@ -72,7 +77,7 @@ const typeDefs = `
     address: String
     email: String!
     phoneNumber: String
-    gender: String!
+    gender: Gender!
     weight: Float!
     height: Float!
     diseases: [String]
@@ -93,7 +98,7 @@ const typeDefs = `
     address: String
     email: String!
     phoneNumber: String
-    gender: String!
+    gender: Gender!
     weight: Float!
     height: Float!
     diseases: [String]

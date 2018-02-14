@@ -4,7 +4,7 @@ const scalars = require('./scalars');
 const URL = 'mongodb://172.17.0.2:27017';
 const DB = 't-watch';
 
-let users; let trainings; let subscriptions; let messages;
+let users; let trainings; let plans; let messages;
 
 const connect = async () => {
   try {
@@ -12,8 +12,9 @@ const connect = async () => {
     const db = connection.db(DB);
 
     users = db.collection('Users');
+    users.ensureIndex({ email: 1 }, { unique: true });
     trainings = db.collection('Trainings');
-    subscriptions = db.collection('Subscriptions');
+    plans = db.collection('Plans');
     messages = db.collection('Messages');
   } catch (e) {
     console.error(e);
@@ -43,10 +44,10 @@ module.exports = {
       return trainings.find(args).toArray();
     },
     plans: async () => {
-      if (!subscriptions) {
+      if (!plans) {
         return null;
       }
-      return subscriptions.find().toArray();
+      return plans.find().toArray();
     },
     messages: async (root, args) => {
       if (!messages) {
@@ -61,7 +62,7 @@ module.exports = {
       if (!users) {
         return null;
       }
-      const res = await users.insertOne({ ...args, registryDate: new Date() });
+      const res = await users.insertOne({ ...args.input, registryDate: new Date() });
       return res.insertedCount === 1;
     },
   },
