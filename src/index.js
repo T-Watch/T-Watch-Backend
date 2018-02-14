@@ -21,5 +21,4 @@ const server = micro(router(
   get('/graphiql', graphiqlHandler),
   (req, res) => send(res, 404, 'not found'),
 ));
-
-server.listen(3000);
+server.listen(process.env.PORT || 3000);

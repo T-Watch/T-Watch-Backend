@@ -1,7 +1,7 @@
 const { MongoClient, ObjectId } = require('mongodb');
 const scalars = require('./scalars');
 
-const URL = 'mongodb://172.17.0.2:27017';
+const URL = process.env.MONGO_URL || 'mongodb://172.17.0.2:27017';
 const DB = 't-watch';
 
 let users; let trainings; let plans; let messages;
