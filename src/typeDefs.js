@@ -22,6 +22,11 @@ const typeDefs = `
     BEGINNER
   }
 
+  type JWT {
+    error: String
+    token: String
+  }
+
   type Location {
     lat: Float
     lng: Float
@@ -109,6 +114,7 @@ const typeDefs = `
   }
 
   type Query {
+    token(email: String!, password: String!): JWT
     user(id: String!): User
     users: [User]
     trainings(userId: String, coachId: String, completed: Boolean): [Training]

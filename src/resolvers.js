@@ -1,4 +1,5 @@
 const { MongoClient, ObjectId } = require('mongodb');
+const jwt = require('jsonwebtoken');
 const scalars = require('./scalars');
 
 const URL = process.env.MONGO_URL || 'mongodb://172.17.0.2:27017';
@@ -24,8 +25,21 @@ const connect = async () => {
 connect();
 module.exports = {
   Query: {
+    token: async (root, args) => {
+      console.log('Get token ', args);
+      if (!users) {
+        return null;
+      }
+      try {
+        const u = await users.findOne(args, { type: 1 });
+        if (!u) throw new Error('Wrong input');
+        return { token: jwt.sign({ email: args.email, type: u.type }, 'shhhh', { expiresIn: '30d' }) };
+      } catch (e) {
+        return { error: e.message };
+      }
+    },
     user: async (root, args) => {
-      console.log(`Get user ${args}`);
+      console.log('Get user ', args);
       if (!users) {
         return null;
       }
