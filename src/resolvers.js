@@ -56,7 +56,7 @@ module.exports = {
       if (!users) {
         return null;
       }
-      return users.findOne(ObjectId(args.id));
+      return users.findOne(ObjectId(args._id));
     }),
     users: auth(async () => {
       if (!users) {
@@ -92,6 +92,21 @@ module.exports = {
       const res = await users.insertOne({ ...args.input, registryDate: new Date() });
       return res.insertedCount === 1;
     },
+    deleteUser: auth(async (root, args) => {
+      if (!users) {
+        return null;
+      }
+      const res = await users.deleteOne(args);
+      return res.deletedCount === 1;
+    }),
+    updateUser: auth(async (root, args) => {
+      if (!users) {
+        return null;
+      }
+      const { email } = args.input;
+      const res = await users.updateOne({ email }, { $set: args.input });
+      return res.modifiedCount === 1;
+    }),
   },
   ...scalars,
 };
