@@ -22,6 +22,19 @@ const connect = async () => {
   }
 };
 
+const auth = callback =>
+  async (root, args, context) => {
+    if (!context.token) {
+      throw new Error('No Authorization header');
+    }
+    try {
+      jwt.verify(context.token, 'shhhh');
+    } catch (e) {
+      return { error: e };
+    }
+    return callback(root, args);
+  };
+
 connect();
 module.exports = {
   Query: {
@@ -38,37 +51,37 @@ module.exports = {
         return { error: e.message };
       }
     },
-    user: async (root, args) => {
+    user: auth(async (root, args) => {
       console.log('Get user ', args);
       if (!users) {
         return null;
       }
       return users.findOne(ObjectId(args.id));
-    },
-    users: async () => {
+    }),
+    users: auth(async () => {
       if (!users) {
         return null;
       }
       return users.find().toArray();
-    },
-    trainings: async (root, args) => {
+    }),
+    trainings: auth(async (root, args) => {
       if (!trainings) {
         return null;
       }
       return trainings.find(args).toArray();
-    },
-    plans: async () => {
+    }),
+    plans: auth(async () => {
       if (!plans) {
         return null;
       }
       return plans.find().toArray();
-    },
-    messages: async (root, args) => {
+    }),
+    messages: auth(async (root, args) => {
       if (!messages) {
         return null;
       }
       return messages.find(args).toArray();
-    },
+    }),
   },
   Mutation: {
     user: async (root, args) => {

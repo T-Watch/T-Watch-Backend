@@ -12,7 +12,10 @@ const schema = makeExecutableSchema({
   resolvers,
 });
 
-const graphqlHandler = microGraphql({ schema });
+const graphqlHandler = async (req, res) => {
+  const graphql = microGraphql({ schema, context: { token: req.headers.Authorization } });
+  return graphql(req, res);
+};
 const graphiqlHandler = microGraphiql({ endpointURL: '/graphql' });
 
 const server = micro(router(
