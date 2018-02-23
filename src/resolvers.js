@@ -5,7 +5,7 @@ const scalars = require('./scalars');
 const URL = process.env.MONGO_URL || 'mongodb://172.17.0.2:27017';
 const DB = 't-watch';
 
-let users; let trainings; let plans; let messages;
+let users; let trainings; let plans; let messages; let trainingBlocks;
 
 const connect = async () => {
   try {
@@ -15,6 +15,7 @@ const connect = async () => {
     users = db.collection('Users');
     users.ensureIndex({ email: 1 }, { unique: true });
     trainings = db.collection('Trainings');
+    trainingBlocks = db.collection('TrainingBlocks');
     plans = db.collection('Plans');
     messages = db.collection('Messages');
   } catch (e) {
@@ -64,11 +65,30 @@ module.exports = {
       }
       return users.find().toArray();
     }),
+    training: auth(async (root, args) => {
+      if (!trainings) {
+        return null;
+      }
+      return trainings.findOne(ObjectId(args._id));
+    }),
     trainings: auth(async (root, args) => {
       if (!trainings) {
         return null;
       }
       return trainings.find(args).toArray();
+    }),
+    trainingBlocks: auth(async (root, args) => {
+      if (!trainingBlocks) {
+        return null;
+      }
+      const query = {};
+      if (args._ids) {
+        query._id = { $in: args._ids };
+      }
+      if (args.coach) {
+        query.coach = args.coach;
+      }
+      return trainingBlocks.find(query).toArray();
     }),
     plans: auth(async () => {
       if (!plans) {
@@ -106,6 +126,30 @@ module.exports = {
       const { email } = args.input;
       const res = await users.updateOne({ email }, { $set: args.input });
       return res.modifiedCount === 1;
+    }),
+    training: auth(async (root, args) => {
+      console.log('New training with', args);
+      if (!trainings) {
+        return null;
+      }
+      const res = await trainings.findOneAndUpdate(
+        { _id: args.input._id || ObjectId() },
+        { $set: args.input, $setOnInsert: { registryDate: new Date() } },
+        { upsert: true, returnOriginal: false },
+      );
+      return res.value;
+    }),
+    trainingBlock: auth(async (root, args) => {
+      console.log('New TrainingBlock with', args);
+      if (!trainingBlocks) {
+        return null;
+      }
+      const res = await trainingBlocks.findOneAndUpdate(
+        { _id: args.input._id || ObjectId() },
+        { $set: args.input, $setOnInsert: { registryDate: new Date() } },
+        { upsert: true, returnOriginal: false },
+      );
+      return res.value;
     }),
   },
   ...scalars,

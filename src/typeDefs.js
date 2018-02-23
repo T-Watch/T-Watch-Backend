@@ -27,32 +27,107 @@ const typeDefs = `
     token: String
   }
 
-  type Location {
-    lat: Float
-    lng: Float
+  type LocationPoint {
+    type: String!
+    coordinates: [Float!]!
+  }
+
+  input LocationPointInput {
+    type: String!
+    coordinates: [Float!]!
   }
 
   type Training {
+    _id: String!
     type: String!
     coach: String!
     user: String!
     date: Date
     maxDate: Date
     description: String
-    trainingBlocks: [TrainingBlock]
-    result: String #-------------------------
+    trainingBlocks: [String]
+    registryDate: Date
+    completed: Boolean!
+  }
+
+  input TrainingInput {
+    _id: String
+    type: String!
+    coach: String!
+    user: String!
+    date: Date
+    maxDate: Date
+    description: String
+    trainingBlocks: [String]
     completed: Boolean!
   }
 
   type TrainingBlock {
+    _id: String!
     coach: String!
+    description: String
     distance: Int
     duration: Int
     maxHR: Int
     minHR: Int
     maxSpeed: Float
     minSpeed: Float
-    elevation: Int #------------???
+    altitude: Float
+    result: [TrainingBlockResult]
+    schema: Boolean
+  }
+
+  input TrainingBlockInput {
+    _id: String
+    coach: String!
+    description: String
+    distance: Int
+    duration: Int
+    maxHR: Int
+    minHR: Int
+    maxSpeed: Float
+    minSpeed: Float
+    altitude: Float
+    result: [TrainingBlockResultInput]
+    schema: Boolean
+  }
+
+  type TrainingBlockResult {
+    date: Date!
+    distance: Float!
+    coords: LocationPoint!
+    altitude: Float!
+    HR: Float!
+    course: Float!
+    speed: Float!
+    gyro: XYZCoords!
+    accel: XYZCoords!
+    magn: XYZCoords!
+  }
+
+  input TrainingBlockResultInput {
+    date: Date!
+    distance: Float
+    coords: LocationPointInput!
+    altitude: Float!
+    HR: Float!
+    course: Float!
+    speed: Float!
+    gyro: XYZCoordsInput!
+    accel: XYZCoordsInput!
+    magn: XYZCoordsInput!
+  }
+
+  type XYZCoords {
+    x: Float!
+    y: Float!
+    z: Float!
+  }
+
+  input XYZCoordsInput {
+    x: Float!
+    y: Float!
+    z: Float!
   }
 
   type Message {
@@ -68,7 +143,7 @@ const typeDefs = `
   type Plan {
     _id: String!
     type: PlanType!
-    testLocations: [Location]#--------------------------
+    testLocations: [LocationPoint]#--------------------------
     monthlyPrice: Int
   }
 
@@ -117,15 +192,19 @@ const typeDefs = `
     token(email: String!, password: String!): JWT
     user(_id: String!): User
     users: [User]
-    trainings(userId: String, coachId: String, completed: Boolean): [Training]
     plans: [Plan]
     messages(type: MessageType!, to: String!): [Message]
+    training(_id: String!): Training
+    trainings(user: String, coach: String, completed: Boolean): [Training]
+    trainingBlocks(_ids: [String], coach: String): [Training]
   }
 
   type Mutation {
     user(input: UserInput!): Boolean
     deleteUser(_id: String!): Boolean
     updateUser(input: UserInput!): Boolean
+    training(input: TrainingInput!): Boolean
+    trainingBlock(input: TrainingBlockInput): TrainingBlock
   }
 `;
 
