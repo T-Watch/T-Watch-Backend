@@ -17,9 +17,9 @@ const typeDefs = `
   }
 
   enum PlanType {
-    PRO
-    ADVANCED
-    BEGINNER
+    PREMIUM
+    STANDAR
+    BASIC
   }
 
   type JWT {
@@ -142,9 +142,28 @@ const typeDefs = `
 
   type Plan {
     _id: String!
+    coach: String!
     type: PlanType!
+    monthlyPrice: Float!
+    lastModified: Date!
+    registryDate: Date!
     testLocations: [LocationPoint]#--------------------------
-    monthlyPrice: Int
+  }
+
+  input PlanInput {
+    coach: String!
+    type: PlanType!
+    monthlyPrice: Float!
+  }
+
+  type PlanSubscription {
+    plan: String!
+    dueDate: Date!
+  }
+
+  input PlanSubscriptionInput {
+    plan: String!
+    dueDate: Date!
   }
 
   type User {
@@ -163,7 +182,7 @@ const typeDefs = `
     diseases: [String]
     allergies: [String]
     surgeries: [String]
-    plan: Plan
+    plan: PlanSubscription
     registryDate: Date
     photo: String #-------------------------
     testResults: [String] #-----------------
@@ -184,14 +203,33 @@ const typeDefs = `
     diseases: [String]
     allergies: [String]
     surgeries: [String]
-    plan: String
+    plan: PlanSubscriptionInput
+    photo: String
+  }
+
+  input UpdateUserInput {
+    type: UserType
+    password: String
+    name: String
+    lastName: String
+    birthday: Date
+    address: String
+    email: String!
+    phoneNumber: String
+    gender: Gender
+    weight: Float
+    height: Float
+    diseases: [String]
+    allergies: [String]
+    surgeries: [String]
+    plan: PlanSubscriptionInput
     photo: String
   }
 
   type Query {
     token(email: String!, password: String!): JWT
     user(email: String!): User
-    users: [User]
+    users(coach: String): [User]
     plans: [Plan]
     messages(type: MessageType!, to: String!): [Message]
     training(_id: String!): Training
@@ -202,9 +240,10 @@ const typeDefs = `
   type Mutation {
     user(input: UserInput!): Boolean
     deleteUser(email: String!): Boolean
-    updateUser(input: UserInput!): Boolean
+    updateUser(input: UpdateUserInput!): Boolean
     training(input: TrainingInput!): Boolean
     trainingBlock(input: TrainingBlockInput): TrainingBlock
+    plan(input: PlanInput): Plan
   }
 `;
 

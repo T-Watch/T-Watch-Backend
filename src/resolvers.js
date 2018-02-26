@@ -62,9 +62,14 @@ module.exports = {
       }
       return users.findOne({ email: args.email });
     }),
-    users: auth(async () => {
+    users: auth(async (root, args) => {
       if (!users) {
         return null;
+      }
+      if (args.coach) {
+        const planIds = (await plans.find({ coach: args.coach })
+          .project({ _id: 1 }).toArray()).map(o => o._id.toString());
+        return users.find({ 'plan.plan': { $in: planIds } }).toArray();
       }
       return users.find().toArray();
     }),
@@ -137,7 +142,10 @@ module.exports = {
       }
       const res = await trainings.findOneAndUpdate(
         { _id: args.input._id || ObjectId() },
-        { $set: args.input, $setOnInsert: { registryDate: new Date() } },
+        {
+          $set: { ...args.input, lastModified: new Date() },
+          $setOnInsert: { registryDate: new Date() },
+        },
         { upsert: true, returnOriginal: false },
       );
       return res.value;
@@ -149,7 +157,25 @@ module.exports = {
       }
       const res = await trainingBlocks.findOneAndUpdate(
         { _id: args.input._id || ObjectId() },
-        { $set: args.input, $setOnInsert: { registryDate: new Date() } },
+        {
+          $set: { ...args.input, lastModified: new Date() },
+          $setOnInsert: { registryDate: new Date() },
+        },
+        { upsert: true, returnOriginal: false },
+      );
+      return res.value;
+    }),
+    plan: auth(async (root, args) => {
+      console.log('New plan with', args);
+      if (!plans) {
+        return null;
+      }
+      const res = await plans.findOneAndUpdate(
+        { _id: args.input._id || ObjectId() },
+        {
+          $set: { ...args.input, lastModified: new Date() },
+          $setOnInsert: { registryDate: new Date() },
+        },
         { upsert: true, returnOriginal: false },
       );
       return res.value;
