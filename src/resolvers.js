@@ -25,6 +25,9 @@ const connect = async () => {
 
 const auth = callback =>
   async (root, args, context) => {
+    if (process.env.NODE_ENV !== 'production') {
+      return callback(root, args);
+    }
     if (!context.token) {
       throw new Error('No Authorization header');
     }
@@ -57,7 +60,7 @@ module.exports = {
       if (!users) {
         return null;
       }
-      return users.findOne(ObjectId(args._id));
+      return users.findOne({ email: args.email });
     }),
     users: auth(async () => {
       if (!users) {
@@ -116,7 +119,7 @@ module.exports = {
       if (!users) {
         return null;
       }
-      const res = await users.deleteOne(args);
+      const res = await users.deleteOne({ email: args.email });
       return res.deletedCount === 1;
     }),
     updateUser: auth(async (root, args) => {

@@ -190,7 +190,7 @@ const typeDefs = `
 
   type Query {
     token(email: String!, password: String!): JWT
-    user(_id: String!): User
+    user(email: String!): User
     users: [User]
     plans: [Plan]
     messages(type: MessageType!, to: String!): [Message]
@@ -201,7 +201,7 @@ const typeDefs = `
 
   type Mutation {
     user(input: UserInput!): Boolean
-    deleteUser(_id: String!): Boolean
+    deleteUser(email: String!): Boolean
     updateUser(input: UserInput!): Boolean
     training(input: TrainingInput!): Boolean
     trainingBlock(input: TrainingBlockInput): TrainingBlock
