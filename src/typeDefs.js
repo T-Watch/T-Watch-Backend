@@ -59,7 +59,7 @@ const typeDefs = `
     maxDate: Date
     description: String
     trainingBlocks: [String]
-    completed: Boolean!
+    completed: Boolean
   }
 
   type TrainingBlock {
@@ -241,7 +241,7 @@ const typeDefs = `
     user(input: UserInput!): Boolean
     deleteUser(email: String!): Boolean
     updateUser(input: UpdateUserInput!): Boolean
-    training(input: TrainingInput!): Boolean
+    training(input: TrainingInput!): Training
     trainingBlock(input: TrainingBlockInput): TrainingBlock
     plan(input: PlanInput): Plan
   }

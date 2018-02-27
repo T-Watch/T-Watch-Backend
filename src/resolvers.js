@@ -144,7 +144,7 @@ module.exports = {
         { _id: args.input._id || ObjectId() },
         {
           $set: { ...args.input, lastModified: new Date() },
-          $setOnInsert: { registryDate: new Date() },
+          $setOnInsert: { registryDate: new Date(), completed: false },
         },
         { upsert: true, returnOriginal: false },
       );
