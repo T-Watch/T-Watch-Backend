@@ -166,7 +166,7 @@ const typeDefs = `
     dueDate: Date!
   }
 
-  type User {
+  interface UserInterface {
     _id: String!
     type: UserType!
     password: String!
@@ -177,15 +177,46 @@ const typeDefs = `
     email: String!
     phoneNumber: String
     gender: Gender!
+    registryDate: Date
+    photo: String #-------------------------
+  }
+
+  type Coach implements UserInterface {
+    _id: String!
+    type: UserType!
+    password: String!
+    name: String!
+    lastName: String!
+    birthday: Date!
+    address: String
+    email: String!
+    phoneNumber: String
+    gender: Gender!
+    registryDate: Date
+    photo: String #-------------------------
+    fields: [String!]!
+  }
+
+  type User implements UserInterface {
+    _id: String!
+    type: UserType!
+    password: String!
+    name: String!
+    lastName: String!
+    birthday: Date!
+    address: String
+    email: String!
+    phoneNumber: String
+    gender: Gender!
+    registryDate: Date
+    photo: String #-------------------------
     weight: Float!
     height: Float!
     diseases: [String]
     allergies: [String]
     surgeries: [String]
     plan: PlanSubscription
-    registryDate: Date
-    photo: String #-------------------------
-    testResults: [String] #-----------------
+    testResults: [String] #------------
   }
 
   input UserInput {
@@ -205,6 +236,7 @@ const typeDefs = `
     surgeries: [String]
     plan: PlanSubscriptionInput
     photo: String
+    fields: [String]
   }
 
   input UpdateUserInput {
@@ -224,12 +256,13 @@ const typeDefs = `
     surgeries: [String]
     plan: PlanSubscriptionInput
     photo: String
+    fields: [String]
   }
 
   type Query {
     token(email: String!, password: String!): JWT
-    user(email: String!): User
-    users(coach: String): [User]
+    user(email: String!): UserInterface
+    users(coach: String): [UserInterface]
     plans: [Plan]
     messages(type: MessageType!, to: String!): [Message]
     training(_id: String!): Training
@@ -240,7 +273,7 @@ const typeDefs = `
   type Mutation {
     user(input: UserInput!): Boolean
     deleteUser(email: String!): Boolean
-    updateUser(input: UpdateUserInput!): Boolean
+    updateUser(input: UpdateUserInput!): UserInterface
     training(input: TrainingInput!): Training
     trainingBlock(input: TrainingBlockInput): TrainingBlock
     plan(input: PlanInput): Plan

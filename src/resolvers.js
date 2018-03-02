@@ -132,8 +132,12 @@ module.exports = {
         return null;
       }
       const { email } = args.input;
-      const res = await users.updateOne({ email }, { $set: args.input });
-      return res.modifiedCount === 1;
+      const res = await users.findOneAndUpdate(
+        { email },
+        { $set: args.input },
+        { returnOriginal: false },
+      );
+      return res.value;
     }),
     training: auth(async (root, args) => {
       console.log('New training with', args);
@@ -180,6 +184,14 @@ module.exports = {
       );
       return res.value;
     }),
+  },
+  UserInterface: {
+    __resolveType(data, context, info) {
+      if (data.type === 'USER') {
+        return info.schema.getType('User');
+      }
+      return info.schema.getType('Coach');
+    },
   },
   ...scalars,
 };
