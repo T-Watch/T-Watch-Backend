@@ -45,7 +45,7 @@ const typeDefs = `
     date: Date
     maxDate: Date
     description: String
-    trainingBlocks: [String]
+    trainingBlocks: [String!]!
     registryDate: Date
     completed: Boolean!
   }
@@ -58,7 +58,7 @@ const typeDefs = `
     date: Date
     maxDate: Date
     description: String
-    trainingBlocks: [String]
+    trainingBlocks: [String!]!
     completed: Boolean
   }
 
@@ -275,6 +275,7 @@ const typeDefs = `
     deleteUser(email: String!): Boolean
     updateUser(input: UpdateUserInput!): UserInterface
     training(input: TrainingInput!): Training
+    deleteTraining(_id: String!): Boolean
     trainingBlock(input: TrainingBlockInput): TrainingBlock
     plan(input: PlanInput): Plan
   }

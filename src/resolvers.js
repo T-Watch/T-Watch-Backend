@@ -154,6 +154,14 @@ module.exports = {
       );
       return res.value;
     }),
+    deleteTraining: auth(async (root, args) => {
+      console.log('Delete training with', args);
+      if (!trainings) {
+        return null;
+      }
+      const res = await trainings.deleteOne({ _id: args._id });
+      return res.deletedCount === 1;
+    }),
     trainingBlock: auth(async (root, args) => {
       console.log('New TrainingBlock with', args);
       if (!trainingBlocks) {
