@@ -212,9 +212,9 @@ const typeDefs = `
     photo: String #-------------------------
     weight: Float!
     height: Float!
-    diseases: [String]
-    allergies: [String]
-    surgeries: [String]
+    diseases: String
+    allergies: String
+    surgeries: String
     plan: PlanSubscription
     testResults: [String] #------------
   }
@@ -231,9 +231,9 @@ const typeDefs = `
     gender: Gender!
     weight: Float!
     height: Float!
-    diseases: [String]
-    allergies: [String]
-    surgeries: [String]
+    diseases: String
+    allergies: String
+    surgeries: String
     plan: PlanSubscriptionInput
     photo: String
     fields: [String]
@@ -251,9 +251,9 @@ const typeDefs = `
     gender: Gender
     weight: Float
     height: Float
-    diseases: [String]
-    allergies: [String]
-    surgeries: [String]
+    diseases: String
+    allergies: String
+    surgeries: String
     plan: PlanSubscriptionInput
     photo: String
     fields: [String]
