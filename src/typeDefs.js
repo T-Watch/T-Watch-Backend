@@ -236,6 +236,7 @@ const typeDefs = `
     surgeries: String
     plan: PlanSubscriptionInput
     photo: String
+    activityClass: Int
     fields: [String]
   }
 
@@ -256,6 +257,7 @@ const typeDefs = `
     surgeries: String
     plan: PlanSubscriptionInput
     photo: String
+    activityClass: Int
     fields: [String]
   }
 
