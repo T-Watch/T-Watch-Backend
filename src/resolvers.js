@@ -168,7 +168,7 @@ module.exports = {
       if (!trainings) {
         return null;
       }
-      const res = await trainings.deleteOne({ _id: args._id });
+      const res = await trainings.deleteOne({ _id: ObjectId(args._id) });
       return res.deletedCount === 1;
     }),
     trainingBlock: auth(async (root, args) => {
