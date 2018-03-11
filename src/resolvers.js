@@ -73,6 +73,15 @@ module.exports = {
       }
       return users.find().toArray();
     }),
+    coaches: auth(async (root, args) => {
+      if (!users) {
+        return null;
+      }
+      if (args.fields) {
+        return users.find({ fields: { $in: args.fields } }).toArray();
+      }
+      return users.find({ type: 'COACH' }).toArray();
+    }),
     training: auth(async (root, args) => {
       if (!trainings) {
         return null;

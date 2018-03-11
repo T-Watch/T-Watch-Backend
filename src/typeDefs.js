@@ -263,6 +263,7 @@ const typeDefs = `
     token(email: String!, password: String!): JWT
     user(email: String!): UserInterface
     users(coach: String): [UserInterface]
+    coaches(fields: [String]): [Coach]
     plans: [Plan]
     messages(type: MessageType!, to: String!): [Message]
     training(_id: String!): Training
