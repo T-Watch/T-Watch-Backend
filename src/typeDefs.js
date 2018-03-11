@@ -229,8 +229,8 @@ const typeDefs = `
     email: String!
     phoneNumber: String
     gender: Gender!
-    weight: Float!
-    height: Float!
+    weight: Float
+    height: Float
     diseases: String
     allergies: String
     surgeries: String
