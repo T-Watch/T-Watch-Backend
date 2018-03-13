@@ -50,6 +50,19 @@ const typeDefs = `
     completed: Boolean!
   }
 
+  type FullTraining {
+    _id: String!
+    type: String!
+    coach: String!
+    user: String!
+    date: Date
+    maxDate: Date
+    description: String
+    trainingBlocks: [TrainingBlock!]!
+    registryDate: Date
+    completed: Boolean!
+  }
+
   input TrainingInput {
     _id: String
     type: String!
@@ -65,7 +78,7 @@ const typeDefs = `
   type TrainingBlock {
     _id: String!
     coach: String!
-    description: String
+    title: String
     distance: Int
     duration: Int
     maxHR: Int
@@ -80,7 +93,7 @@ const typeDefs = `
   input TrainingBlockInput {
     _id: String
     coach: String!
-    description: String
+    title: String
     distance: Int
     duration: Int
     maxHR: Int
@@ -273,7 +286,8 @@ const typeDefs = `
     plans: [Plan]
     messages(type: MessageType!, to: String!): [Message]
     training(_id: String!): Training
-    trainings(user: String, coach: String, completed: Boolean): [Training]
+    trainings(user: String, coach: String, completed: Boolean, since: Date): [Training]
+    fullTrainings(user: String, coach: String, completed: Boolean, since: Date): [FullTraining]
     trainingBlocks(_ids: [String], coach: String): [TrainingBlock]
   }
 

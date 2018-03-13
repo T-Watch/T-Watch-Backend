@@ -108,7 +108,20 @@ module.exports = {
       if (!trainings) {
         return null;
       }
-      return trainings.find(args).toArray();
+      const query = {};
+      if (args.user) {
+        query.user = args.user;
+      }
+      if (args.coach) {
+        query.coach = args.coach;
+      }
+      if (args.completed) {
+        query.completed = args.completed;
+      }
+      if (args.since) {
+        query.registryDate = { $gte: args.since };
+      }
+      return trainings.find(query).toArray();
     }),
     trainingBlocks: auth(async (root, args) => {
       if (!trainingBlocks) {
@@ -122,6 +135,30 @@ module.exports = {
         query.coach = args.coach;
       }
       return trainingBlocks.find(query).toArray();
+    }),
+    fullTrainings: auth(async (root, args) => {
+      if (!trainings) {
+        return null;
+      }
+      const query = {};
+      if (args.user) {
+        query.user = args.user;
+      }
+      if (args.coach) {
+        query.coach = args.coach;
+      }
+      if (args.completed) {
+        query.completed = args.completed;
+      }
+      if (args.since) {
+        query.registryDate = { $gte: args.since };
+      }
+      const res = await trainings.find(query).toArray();
+      for (let i = 0; i < res.length; i += 1) {
+        const t = res[i];
+        t.trainingBlocks = trainingBlocks.find({ _id: { $in: t.trainingBlocks || [] } }).toArray();
+      }
+      return Promise.all(res);
     }),
     plans: auth(async () => {
       if (!plans) {
