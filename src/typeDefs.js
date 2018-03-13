@@ -173,7 +173,8 @@ const typeDefs = `
     name: String!
     lastName: String!
     birthday: Date!
-    address: String
+    district: String!
+    province: String!
     email: String!
     phoneNumber: String
     gender: Gender!
@@ -188,7 +189,8 @@ const typeDefs = `
     name: String!
     lastName: String!
     birthday: Date!
-    address: String
+    district: String!
+    province: String!
     email: String!
     phoneNumber: String
     gender: Gender!
@@ -204,7 +206,8 @@ const typeDefs = `
     name: String!
     lastName: String!
     birthday: Date!
-    address: String
+    district: String!
+    province: String!
     email: String!
     phoneNumber: String
     gender: Gender!
@@ -225,7 +228,8 @@ const typeDefs = `
     name: String!
     lastName: String!
     birthday: Date!
-    address: String
+    district: String!
+    province: String!
     email: String!
     phoneNumber: String
     gender: Gender!
@@ -234,7 +238,6 @@ const typeDefs = `
     diseases: String
     allergies: String
     surgeries: String
-    plan: PlanSubscriptionInput
     photo: String
     activityClass: Int
     fields: [String]
@@ -246,7 +249,8 @@ const typeDefs = `
     name: String
     lastName: String
     birthday: Date
-    address: String
+    district: String!
+    province: String!
     email: String!
     phoneNumber: String
     gender: Gender
@@ -265,16 +269,16 @@ const typeDefs = `
     token(email: String!, password: String!): JWT
     user(email: String!): UserInterface
     users(coach: String): [UserInterface]
-    coaches(fields: [String]): [Coach]
+    coaches(fields: [String], province: String, search: String): [Coach]
     plans: [Plan]
     messages(type: MessageType!, to: String!): [Message]
     training(_id: String!): Training
     trainings(user: String, coach: String, completed: Boolean): [Training]
-    trainingBlocks(_ids: [String], coach: String): [Training]
+    trainingBlocks(_ids: [String], coach: String): [TrainingBlock]
   }
 
   type Mutation {
-    user(input: UserInput!): Boolean
+    user(input: UserInput!): UserInterface
     deleteUser(email: String!): Boolean
     updateUser(input: UpdateUserInput!): UserInterface
     training(input: TrainingInput!): Training

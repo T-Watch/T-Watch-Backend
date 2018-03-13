@@ -77,10 +77,26 @@ module.exports = {
       if (!users) {
         return null;
       }
+      const query = { type: 'COACH' };
+
       if (args.fields) {
-        return users.find({ fields: { $in: args.fields } }).toArray();
+        query.fields = { $in: args.fields };
       }
-      return users.find({ type: 'COACH' }).toArray();
+      if (args.province) {
+        query.province = { $eq: args.province };
+      }
+      if (args.search) {
+        const regexList = args.search.split(' ').map(e => new RegExp(e, 'i'));
+        return users.find({
+          ...query,
+          $or: [
+            { district: { $regex: args.search } },
+            { name: { $in: regexList } },
+            { lastName: { $in: regexList } },
+            { email: { $in: regexList } }],
+        }).toArray();
+      }
+      return users.find(query).toArray();
     }),
     training: auth(async (root, args) => {
       if (!trainings) {
@@ -127,7 +143,7 @@ module.exports = {
         return null;
       }
       const res = await users.insertOne({ ...args.input, registryDate: new Date() });
-      return res.insertedCount === 1;
+      return res.ops[0];
     },
     deleteUser: auth(async (root, args) => {
       if (!users) {
