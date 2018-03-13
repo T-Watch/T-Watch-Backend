@@ -45,19 +45,6 @@ const typeDefs = `
     date: Date
     maxDate: Date
     description: String
-    trainingBlocks: [String!]!
-    registryDate: Date
-    completed: Boolean!
-  }
-
-  type FullTraining {
-    _id: String!
-    type: String!
-    coach: String!
-    user: String!
-    date: Date
-    maxDate: Date
-    description: String
     trainingBlocks: [TrainingBlock!]!
     registryDate: Date
     completed: Boolean!
@@ -287,7 +274,6 @@ const typeDefs = `
     messages(type: MessageType!, to: String!): [Message]
     training(_id: String!): Training
     trainings(user: String, coach: String, completed: Boolean, since: Date): [Training]
-    fullTrainings(user: String, coach: String, completed: Boolean, since: Date): [FullTraining]
     trainingBlocks(_ids: [String], coach: String): [TrainingBlock]
   }
 

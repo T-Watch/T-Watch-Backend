@@ -99,45 +99,19 @@ module.exports = {
       return users.find(query).toArray();
     }),
     training: auth(async (root, args) => {
-      if (!trainings) {
+      if (!trainings || !trainingBlocks) {
         return null;
       }
-      return trainings.findOne(ObjectId(args._id));
+      const res = await trainings.findOne(ObjectId(args._id));
+      if (res) {
+        res.trainingBlocks = await trainingBlocks.find({
+          _id: { $in: res.trainingBlocks || [] },
+        }).toArray();
+      }
+      return res;
     }),
     trainings: auth(async (root, args) => {
-      if (!trainings) {
-        return null;
-      }
-      const query = {};
-      if (args.user) {
-        query.user = args.user;
-      }
-      if (args.coach) {
-        query.coach = args.coach;
-      }
-      if (args.completed) {
-        query.completed = args.completed;
-      }
-      if (args.since) {
-        query.registryDate = { $gte: args.since };
-      }
-      return trainings.find(query).toArray();
-    }),
-    trainingBlocks: auth(async (root, args) => {
-      if (!trainingBlocks) {
-        return null;
-      }
-      const query = {};
-      if (args._ids) {
-        query._id = { $in: args._ids };
-      }
-      if (args.coach) {
-        query.coach = args.coach;
-      }
-      return trainingBlocks.find(query).toArray();
-    }),
-    fullTrainings: auth(async (root, args) => {
-      if (!trainings) {
+      if (!trainings || !trainingBlocks) {
         return null;
       }
       const query = {};
@@ -159,6 +133,19 @@ module.exports = {
         t.trainingBlocks = trainingBlocks.find({ _id: { $in: t.trainingBlocks || [] } }).toArray();
       }
       return Promise.all(res);
+    }),
+    trainingBlocks: auth(async (root, args) => {
+      if (!trainingBlocks) {
+        return null;
+      }
+      const query = {};
+      if (args._ids) {
+        query._id = { $in: args._ids };
+      }
+      if (args.coach) {
+        query.coach = args.coach;
+      }
+      return trainingBlocks.find(query).toArray();
     }),
     plans: auth(async () => {
       if (!plans) {
