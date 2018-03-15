@@ -131,12 +131,14 @@ module.exports = {
       const promises = [];
       for (let i = 0; i < res.length; i += 1) {
         const t = res[i];
-        t.trainingBlocks = trainingBlocks.find({
-          _id: {
-            $in: t.trainingBlocks || [].map(e => ObjectId(e)),
-          },
-        }).toArray();
-        promises.push(t.trainingBlocks);
+        if (t.trainingBlocks) {
+          t.trainingBlocks = trainingBlocks.find({
+            _id: {
+              $in: t.trainingBlocks.map(e => ObjectId(e)),
+            },
+          }).toArray();
+          promises.push(t.trainingBlocks);
+        }
       }
       await Promise.all(promises);
       return res;
