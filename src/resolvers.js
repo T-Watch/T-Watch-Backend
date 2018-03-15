@@ -128,11 +128,18 @@ module.exports = {
         query.registryDate = { $gte: args.since };
       }
       const res = await trainings.find(query).toArray();
+      const promises = [];
       for (let i = 0; i < res.length; i += 1) {
         const t = res[i];
-        t.trainingBlocks = trainingBlocks.find({ _id: { $in: t.trainingBlocks || [] } }).toArray();
+        t.trainingBlocks = trainingBlocks.find({
+          _id: {
+            $in: t.trainingBlocks || [].map(e => ObjectId(e)),
+          },
+        }).toArray();
+        promises.push(t.trainingBlocks);
       }
-      return Promise.all(res);
+      await Promise.all(promises);
+      return res;
     }),
     trainingBlocks: auth(async (root, args) => {
       if (!trainingBlocks) {
