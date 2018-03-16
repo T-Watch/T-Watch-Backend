@@ -210,6 +210,11 @@ module.exports = {
         },
         { upsert: true, returnOriginal: false },
       );
+      res.value.trainingBlocks = await trainingBlocks.find({
+        _id: {
+          $in: res.value.trainingBlocks.map(e => ObjectId(e)),
+        },
+      }).toArray();
       return res.value;
     }),
     deleteTraining: auth(async (root, args) => {
