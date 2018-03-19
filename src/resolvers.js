@@ -156,9 +156,12 @@ module.exports = {
       }
       return trainingBlocks.find(query).toArray();
     }),
-    plans: auth(async () => {
+    plans: auth(async (root, args) => {
       if (!plans) {
         return null;
+      }
+      if (args.coach) {
+        return plans.find({ coach: args.coach }).toArray();
       }
       return plans.find().toArray();
     }),
