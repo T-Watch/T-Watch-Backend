@@ -121,7 +121,7 @@ module.exports = {
       if (args.coach) {
         query.coach = args.coach;
       }
-      if (args.completed) {
+      if (args.completed !== undefined) {
         query.completed = args.completed;
       }
       if (args.since) {
