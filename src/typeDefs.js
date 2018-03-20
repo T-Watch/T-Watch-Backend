@@ -88,7 +88,6 @@ const typeDefs = `
     maxSpeed: Float
     minSpeed: Float
     altitude: Float
-    result: [TrainingBlockResultInput]
     schema: Boolean
   }
 
@@ -100,9 +99,7 @@ const typeDefs = `
     HR: Float!
     course: Float!
     speed: Float!
-    gyro: XYZCoords!
     accel: XYZCoords!
-    magn: XYZCoords!
   }
 
   input TrainingBlockResultInput {
@@ -113,9 +110,12 @@ const typeDefs = `
     HR: Float!
     course: Float!
     speed: Float!
-    gyro: XYZCoordsInput!
     accel: XYZCoordsInput!
-    magn: XYZCoordsInput!
+  }
+
+  input TrainingResultInput {
+    _id: String!
+    result: [TrainingBlockResultInput!]!
   }
 
   type XYZCoords {
@@ -249,8 +249,8 @@ const typeDefs = `
     name: String
     lastName: String
     birthday: Date
-    district: String!
-    province: String!
+    district: String
+    province: String
     email: String!
     phoneNumber: String
     gender: Gender
@@ -284,6 +284,7 @@ const typeDefs = `
     training(input: TrainingInput!): Training
     deleteTraining(_id: String!): Boolean
     trainingBlock(input: TrainingBlockInput): TrainingBlock
+    trainingResult(input: [TrainingResultInput!]!): Boolean
     plan(input: PlanInput): Plan
   }
 `;

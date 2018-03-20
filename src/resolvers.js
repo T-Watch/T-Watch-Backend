@@ -247,6 +247,34 @@ module.exports = {
       );
       return res.value;
     }),
+    trainingResult: auth(async (root, args) => {
+      console.log('Training result with', args);
+      if (!trainings || !trainingBlocks) {
+        return null;
+      }
+      const ids = [];
+      const promises = [];
+      for (let i = 0; i < args.input.length; i += 1) {
+        const { _id } = args.input[i];
+        ids[i] = _id;
+        promises[i] = trainingBlocks.findOneAndUpdate(
+          { _id: ObjectId(_id) },
+          {
+            $set: { result: args.input[i].result, lastModified: new Date() },
+          },
+          { returnOriginal: false },
+        );
+      }
+      await Promise.all(promises);
+      const res = await trainings.findOneAndUpdate(
+        { trainingBlocks: { $eq: ids } },
+        {
+          $set: { completed: true, lastModified: new Date() },
+        },
+        { returnOriginal: false },
+      );
+      return res.lastErrorObject.n === 1;
+    }),
     plan: auth(async (root, args) => {
       console.log('New plan with', args);
       if (!plans) {
