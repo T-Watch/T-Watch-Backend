@@ -205,12 +205,12 @@ module.exports = {
       if (!trainings) {
         return null;
       }
-      const update = args.input;
+      const update = { ...args.input };
       delete update._id;
       const res = await trainings.findOneAndUpdate(
         { _id: args.input._id ? ObjectId(args.input._id) : ObjectId() },
         {
-          $set: { update, lastModified: new Date() },
+          $set: { ...update, lastModified: new Date() },
           $setOnInsert: { registryDate: new Date(), completed: false },
         },
         { upsert: true, returnOriginal: false },
@@ -235,7 +235,7 @@ module.exports = {
       if (!trainingBlocks) {
         return null;
       }
-      const update = args.input;
+      const update = { ...args.input };
       delete update._id;
       const res = await trainingBlocks.findOneAndUpdate(
         { _id: args.input._id ? ObjectId(args.input._id) : ObjectId() },
@@ -252,7 +252,7 @@ module.exports = {
       if (!plans) {
         return null;
       }
-      const update = args.input;
+      const update = { ...args.input };
       delete update._id;
       const res = await plans.findOneAndUpdate(
         { _id: args.input._id ? ObjectId(args.input._id) : ObjectId() },
