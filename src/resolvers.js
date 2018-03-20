@@ -240,7 +240,7 @@ module.exports = {
       const res = await trainingBlocks.findOneAndUpdate(
         { _id: args.input._id ? ObjectId(args.input._id) : ObjectId() },
         {
-          $set: { update, lastModified: new Date() },
+          $set: { ...update, lastModified: new Date() },
           $setOnInsert: { registryDate: new Date() },
         },
         { upsert: true, returnOriginal: false },
@@ -257,7 +257,7 @@ module.exports = {
       const res = await plans.findOneAndUpdate(
         { _id: args.input._id ? ObjectId(args.input._id) : ObjectId() },
         {
-          $set: { update, lastModified: new Date() },
+          $set: { ...update, lastModified: new Date() },
           $setOnInsert: { registryDate: new Date() },
         },
         { upsert: true, returnOriginal: false },
