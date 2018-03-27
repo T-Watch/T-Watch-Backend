@@ -165,6 +165,12 @@ module.exports = {
       }
       return plans.find().toArray();
     }),
+    plan: auth(async (root, args) => {
+      if (!plans) {
+        return null;
+      }
+      return plans.findOne({ _id: ObjectId(args._id) });
+    }),
     messages: auth(async (root, args) => {
       if (!messages) {
         return null;

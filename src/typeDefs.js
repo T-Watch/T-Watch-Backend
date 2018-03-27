@@ -271,6 +271,7 @@ const typeDefs = `
     users(coach: String): [UserInterface]
     coaches(fields: [String], province: String, search: String): [Coach]
     plans(coach: String): [Plan]
+    plan(_id: String!): Plan
     messages(type: MessageType!, to: String!): [Message]
     training(_id: String!): Training
     trainings(user: String, coach: String, completed: Boolean, since: Date): [Training]
