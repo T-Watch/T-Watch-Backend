@@ -261,6 +261,16 @@ module.exports = {
       );
       return res.value;
     }),
+    deleteTrainingBlocks: auth(async (root, args) => {
+      console.log('Delete TrainingBlocks with', args);
+      if (!trainingBlocks) {
+        return null;
+      }
+      const res = await trainingBlocks.deleteMany({
+        _id: { $in: args._ids.map(i => ObjectId(i)) },
+      });
+      return res.deletedCount === args._ids.length;
+    }),
     trainingResult: auth(async (root, args) => {
       console.log('Training result with', args);
       if (!trainings || !trainingBlocks) {

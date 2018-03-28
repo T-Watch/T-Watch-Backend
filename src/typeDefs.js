@@ -286,6 +286,7 @@ const typeDefs = `
     updateUser(input: UpdateUserInput!): UserInterface
     training(input: TrainingInput!): Training
     deleteTraining(_id: String!): Boolean
+    deleteTrainingBlocks(_ids: [String!]!): Boolean
     trainingBlock(input: TrainingBlockInput): TrainingBlock
     trainingResult(input: [TrainingResultInput!]!): Boolean
     plan(input: PlanInput): Plan
