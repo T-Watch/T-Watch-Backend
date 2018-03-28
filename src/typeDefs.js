@@ -277,7 +277,7 @@ const typeDefs = `
     messages(type: MessageType!, to: String!): [Message]
     training(_id: String!): Training
     trainings(user: String, coach: String, completed: Boolean, since: Date, month: Date): [Training]
-    trainingBlocks(_ids: [String], coach: String): [TrainingBlock]
+    trainingBlocks(_ids: [String], coach: String, schema: Boolean): [TrainingBlock]
   }
 
   type Mutation {

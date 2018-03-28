@@ -162,6 +162,9 @@ module.exports = {
       if (args.coach) {
         query.coach = args.coach;
       }
+      if (args.schema !== undefined) {
+        query.schema = args.schema;
+      }
       return trainingBlocks.find(query).toArray();
     }),
     plans: auth(async (root, args) => {
