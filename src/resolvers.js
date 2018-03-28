@@ -129,10 +129,10 @@ module.exports = {
       }
       if (args.month) {
         const first = new Date(args.month);
-        first.setDate(1);
+        first.setDate(-5);
         const last = new Date(args.month);
         last.setMonth(first.getMonth() + 1);
-        last.setDate(0);
+        last.setDate(5);
         query.date = { $gte: first, $lte: last };
       }
       const res = await trainings.find(query).toArray();
