@@ -131,7 +131,7 @@ module.exports = {
         const first = new Date(args.month);
         first.setDate(-5);
         const last = new Date(args.month);
-        last.setMonth(first.getMonth() + 1);
+        last.setMonth(args.month.getMonth() + 1);
         last.setDate(5);
         query.date = { $gte: first, $lte: last };
       }
