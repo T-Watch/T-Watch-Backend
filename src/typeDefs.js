@@ -151,6 +151,7 @@ const typeDefs = `
   }
 
   input PlanInput {
+    _id: String
     coach: String!
     type: PlanType!
     monthlyPrice: Float!
@@ -274,7 +275,7 @@ const typeDefs = `
     plan(_id: String!): Plan
     messages(type: MessageType!, to: String!): [Message]
     training(_id: String!): Training
-    trainings(user: String, coach: String, completed: Boolean, since: Date): [Training]
+    trainings(user: String, coach: String, completed: Boolean, since: Date, month: Date): [Training]
     trainingBlocks(_ids: [String], coach: String): [TrainingBlock]
   }
 
