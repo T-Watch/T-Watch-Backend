@@ -47,6 +47,7 @@ const typeDefs = `
     description: String
     trainingBlocks: [TrainingBlock!]!
     registryDate: Date
+    lastModified: Date!
     completed: Boolean!
   }
 

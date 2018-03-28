@@ -135,7 +135,7 @@ module.exports = {
         last.setDate(5);
         query.date = { $gte: first, $lte: last };
       }
-      const res = await trainings.find(query).toArray();
+      const res = await trainings.find(query).sort({ lastModified: -1 }).toArray();
       const promises = [];
       for (let i = 0; i < res.length; i += 1) {
         const t = res[i];
