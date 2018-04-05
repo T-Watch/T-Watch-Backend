@@ -50,7 +50,7 @@ module.exports = {
       try {
         const u = await users.findOne(args, { type: 1 });
         if (!u) throw new Error('Wrong input');
-        return { token: jwt.sign({ email: args.email, type: u.type }, 'shhhh', { expiresIn: '30d' }) };
+        return { token: jwt.sign({ email: args.email, type: u.type }, 'shhhh', { expiresIn: '30d' }), type: u.type };
       } catch (e) {
         return { error: e.message };
       }

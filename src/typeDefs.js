@@ -25,6 +25,7 @@ const typeDefs = `
   type JWT {
     error: String
     token: String
+    type: UserType
   }
 
   type LocationPoint {
