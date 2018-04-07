@@ -136,7 +136,7 @@ const typeDefs = `
     body: String!
   }
 
-  type MessageInput {
+  input MessageInput {
     from: String!
     to: String!
     date: Date!
