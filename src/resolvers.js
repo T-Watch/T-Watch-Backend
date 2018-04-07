@@ -322,6 +322,14 @@ module.exports = {
       );
       return res.value;
     }),
+    message: auth(async (root, args) => {
+      console.log('New message with', args);
+      if (!messages) {
+        return null;
+      }
+      const res = await messages.insertOne({ ...args.input, date: new Date() });
+      return res.ops[0];
+    }),
   },
   UserInterface: {
     __resolveType(data, context, info) {

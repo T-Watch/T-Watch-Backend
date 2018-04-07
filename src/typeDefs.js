@@ -139,7 +139,6 @@ const typeDefs = `
   input MessageInput {
     from: String!
     to: String!
-    date: Date!
     subject: String!
     body: String!
   }
