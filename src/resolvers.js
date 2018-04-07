@@ -186,7 +186,7 @@ module.exports = {
       if (!messages) {
         return null;
       }
-      return messages.find(args).toArray();
+      return messages.find(args).sort({ date: -1 }).toArray();
     }),
   },
   Mutation: {

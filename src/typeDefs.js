@@ -11,11 +11,6 @@ const typeDefs = `
     F
   }
 
-  enum MessageType {
-    REGULAR
-    JOIN
-  }
-
   enum PlanType {
     PREMIUM
     STANDAR
@@ -134,12 +129,19 @@ const typeDefs = `
 
   type Message {
     _id: String!
-    type: MessageType!
     from: String!
     to: String!
     date: Date!
     subject: String!
-    body: String
+    body: String!
+  }
+
+  type MessageInput {
+    from: String!
+    to: String!
+    date: Date!
+    subject: String!
+    body: String!
   }
 
   type Plan {
@@ -275,7 +277,7 @@ const typeDefs = `
     coaches(fields: [String], province: String, search: String): [Coach]
     plans(coach: String): [Plan]
     plan(_id: String!): Plan
-    messages(type: MessageType!, to: String!): [Message]
+    messages(from: String!, to: String): [Message]
     training(_id: String!): Training
     trainings(user: String, coach: String, completed: Boolean, since: Date, month: Date): [Training]
     trainingBlocks(_ids: [String], coach: String, schema: Boolean): [TrainingBlock]
@@ -291,6 +293,7 @@ const typeDefs = `
     trainingBlock(input: TrainingBlockInput): TrainingBlock
     trainingResult(input: [TrainingResultInput!]!): Boolean
     plan(input: PlanInput): Plan
+    message(input: MessageInput!): Message
   }
 `;
 
