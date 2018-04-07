@@ -186,6 +186,9 @@ module.exports = {
       if (!messages) {
         return null;
       }
+      if (!args.from && !args.to) {
+        return null;
+      }
       return messages.find(args).sort({ date: -1 }).toArray();
     }),
   },

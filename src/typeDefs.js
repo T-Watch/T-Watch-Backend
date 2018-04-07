@@ -277,7 +277,7 @@ const typeDefs = `
     coaches(fields: [String], province: String, search: String): [Coach]
     plans(coach: String): [Plan]
     plan(_id: String!): Plan
-    messages(from: String!, to: String): [Message]
+    messages(from: String, to: String): [Message]
     training(_id: String!): Training
     trainings(user: String, coach: String, completed: Boolean, since: Date, month: Date): [Training]
     trainingBlocks(_ids: [String], coach: String, schema: Boolean): [TrainingBlock]
